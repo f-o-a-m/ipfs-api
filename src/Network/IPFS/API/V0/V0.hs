@@ -28,5 +28,5 @@ type GetNodeID = "id"
                :> Get '[JSON] IPFSNodeInfo
 
 -- POST /api/v0/add
-type PostAddObjects = "add" :> MultipartFormDataReqBody [AddFile] :> Post '[SequentialJSON] AddObjectResponse
+type PostAddObjects = "add" :> MultipartFormDataReqBody [AddFile] :> Post '[SequentialJSON] [AddObjectResponse]
 --                    :> [AddObjectRequest]

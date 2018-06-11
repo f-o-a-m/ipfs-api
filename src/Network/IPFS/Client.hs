@@ -7,4 +7,4 @@ import           Network.IPFS.API.V0.Types
 import           Servant.API               ((:<|>) (..))
 import           Servant.Client
 
-v0GetNode :<|> v0GetObject :<|> v0PostObject = client apiV0
+v0GetNode :<|> v0GetObject :<|> v0PostAddObjects = client apiV0

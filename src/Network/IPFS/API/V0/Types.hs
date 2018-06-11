@@ -1,6 +1,9 @@
 module Network.IPFS.API.V0.Types where
 
 import           Data.Aeson
+import qualified Data.Aeson.Parser                     as AP
+import           Data.Aeson.Types                      (parseEither)
+import qualified Data.Attoparsec.ByteString            as AT
 import qualified Data.ByteString                       as BS
 import qualified Data.ByteString.Lazy                  as BL
 import           Data.Proxy
@@ -22,7 +25,7 @@ import           Servant.MultipartFormData
 data PlainTextBinary
 
 instance Accept PlainTextBinary where
-    contentType _ = contentType (Proxy @PlainText)
+    contentTypes _ = contentTypes (Proxy @PlainText)
 
 instance MimeRender PlainTextBinary BL.ByteString where
     mimeRender _ = id
@@ -81,7 +84,7 @@ instance FromJSON AddObjectResponse where
     parseJSON = withObject "AddObjectResponse" $ \o ->
         AddObjectResponse <$> o .: "Name"
                           <*> o .: "Hash"
-                          <*> o .: "Size"
+                          <*> (read <$> o .: "Size") -- Size is Strung sometimes ಠ_______________ಠ
 
 -- The response for multiple files submitted to /api/v0/add
 -- isnt an array of objects, but just multiple JSON objects in a row.
@@ -90,8 +93,17 @@ instance FromJSON AddObjectResponse where
 data SequentialJSON
 
 instance Accept SequentialJSON where
-    contentType _ = contentType (Proxy @JSON)
+    contentTypes _ = contentTypes (Proxy @JSON)
 
 instance FromJSON a => MimeUnrender SequentialJSON [a] where
-    mimeUnrender = undefined
+    mimeUnrender _ bl = -- we do the reverse after parsing so any non-json-parsing appear in the correct order
+        sequence . map (parseEither parseJSON) =<< (reverse <$> go (BL.toStrict bl) [])
+
+        where go bs acc | BS.null bs = Right acc
+                        | bs == "\n" = Right acc -- v0PostAddObjects will \n-terminate
+                        | otherwise  = let withResultOf = \case
+                                             AT.Fail rem ctxts err -> Left ("SequentialJSON failed to parse in " <> show ctxts <> ": " <> err <> "; rem=" <> show rem)
+                                             AT.Partial c -> withResultOf (c "")
+                                             AT.Done rem res -> go rem (res:acc)
+                                        in withResultOf (AT.parse AP.json' bs)
 

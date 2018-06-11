@@ -3,13 +3,18 @@ module Servant.MultipartFormData
   ( ToMultipartFormData (..)
   , MultipartFormDataReqBody
   ) where
+
 import           Control.Monad.IO.Class                (MonadIO, liftIO)
-import           Data.Proxy
+import           Data.Binary.Builder                   (toLazyByteString)
+import qualified Data.ByteString.Lazy                  as BL
+import           Data.Proxy                            (Proxy (..))
+import           Network.HTTP.Client                   (RequestBody (..))
 import           Network.HTTP.Client.MultipartFormData
 import           Network.HTTP.Media.MediaType
 import           Servant.API
 import           Servant.Client
-import           Servant.Client.Core
+import           Servant.Client.Core                   hiding (RequestBody (RequestBodyLBS))
+import qualified Servant.Client.Core                   as Servant (RequestBody (RequestBodyLBS))
 
 -- | A type that can be converted to a multipart/form-data value.
 class ToMultipartFormData a where
@@ -23,7 +28,14 @@ instance (MonadIO m, RunClient m, MimeUnrender ct a, ToMultipartFormData b) => H
     type Client m (MultipartFormDataReqBody b :> Post (ct ': cts) a) = b -> m a
     clientWithRoute pm _ req mpdata = do
         boundary <- liftIO webkitBoundary
-        body <- liftIO $ renderParts boundary (toMultipartFormData mpdata)
+        reqBody <- liftIO $ renderParts boundary (toMultipartFormData mpdata)
+        body <- liftIO $ renderRequestBody reqBody
         let mediaType = "multipart" // "form-data" /: ("boundary", boundary)
-            req' = req { requestBody = Just (RequestBodyLBS undefined, mediaType) }
+            req' = req { requestBody = Just (Servant.RequestBodyLBS body, mediaType) }
         clientWithRoute pm (Proxy :: Proxy (Post (ct ': cts) a)) req'
+
+        where renderRequestBody = \case
+                RequestBodyLBS lbs -> return lbs
+                RequestBodyBS  sbs -> return (BL.fromStrict sbs)
+                RequestBodyBuilder _ builder -> return (toLazyByteString builder)
+                RequestBodyIO io -> renderRequestBody =<< io
