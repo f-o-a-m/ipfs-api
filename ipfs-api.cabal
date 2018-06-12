@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4bf194fa4b2b3d9b1f9885c5a17ed61d67baeb3806e95ccf8987dab44922919a
+-- hash: ed2cdea88a5c1ce11adc232923f1a0504d4a0b58ee77dfaab6a78f64b136dd02
 
 name:           ipfs-api
 version:        0.1.0.0
@@ -45,6 +45,7 @@ library
     , text >=1.2.3.0 && <1.3
   exposed-modules:
       Network.IPFS.API.V0
+      Network.IPFS.API.V0.Quirks
       Network.IPFS.API.V0.Types
       Network.IPFS.API.V0.V0
       Network.IPFS.Client

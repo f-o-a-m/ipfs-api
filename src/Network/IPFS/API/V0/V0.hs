@@ -1,9 +1,11 @@
 module Network.IPFS.API.V0.V0 where
 
-import           Data.ByteString           (ByteString)
-import           Network.IPFS.API.V0.Types
+import           Data.ByteString            (ByteString)
 import           Servant.API
 import           Servant.MultipartFormData
+
+import           Network.IPFS.API.V0.Quirks
+import           Network.IPFS.API.V0.Types
 
 -- This is a convenience synonym around the fact that IPFS's RPC API uses the argument
 -- "arg" _ALL_ _OVER_ _THE_ _PLACE_. In some cases, it even uses it more than once in the
@@ -28,5 +30,6 @@ type GetNodeID = "id"
                :> Get '[JSON] IPFSNodeInfo
 
 -- POST /api/v0/add
-type PostAddObjects = "add" :> MultipartFormDataReqBody [AddFile] :> Post '[SequentialJSON] [AddObjectResponse]
---                    :> [AddObjectRequest]
+type PostAddObjects =  "add"
+                    :> MultipartFormDataReqBody [AddFile]
+                    :> Post '[SequentialJSON] [AddObjectResponse]

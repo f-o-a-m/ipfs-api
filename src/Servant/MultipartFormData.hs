@@ -39,3 +39,4 @@ instance (MonadIO m, RunClient m, MimeUnrender ct a, ToMultipartFormData b) => H
                 RequestBodyBS  sbs -> return (BL.fromStrict sbs)
                 RequestBodyBuilder _ builder -> return (toLazyByteString builder)
                 RequestBodyIO io -> renderRequestBody =<< io
+                -- todo: support the Gives-/NeedsPopper-based RequestBodies?
