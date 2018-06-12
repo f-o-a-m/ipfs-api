@@ -1,13 +1,15 @@
 -- Servant support for IPFS HTTP-RPC quirks
 module Network.IPFS.API.V0.Quirks where
 
-import           Data.Aeson                 (FromJSON (..))
-import qualified Data.Aeson.Parser          as AP
-import           Data.Aeson.Types           (parseEither)
-import qualified Data.Attoparsec.ByteString as AT
-import qualified Data.ByteString            as BS
-import qualified Data.ByteString.Lazy       as BL
-import           Data.Proxy                 (Proxy (..))
+import           Data.Aeson                   (FromJSON (..))
+import qualified Data.Aeson.Parser            as AP
+import           Data.Aeson.Types             (parseEither)
+import qualified Data.Attoparsec.ByteString   as AT
+import qualified Data.ByteString              as BS
+import qualified Data.ByteString.Lazy         as BL
+import           Data.List.NonEmpty           ((<|))
+import           Data.Proxy                   (Proxy (..))
+import           Network.HTTP.Media.MediaType
 import           Servant.API
 
 --------------------------------------------------------------
@@ -17,7 +19,7 @@ import           Servant.API
 data PlainTextBinary
 
 instance Accept PlainTextBinary where
-  contentTypes _ = contentTypes (Proxy @PlainText)
+  contentTypes _ = ("text" // "plain") <| contentTypes (Proxy @PlainText)
 
 instance MimeRender PlainTextBinary BL.ByteString where
   mimeRender _ = id
