@@ -20,16 +20,16 @@ type IPFSArgOpt d a = QueryParam' '[Optional, Strict, Description d] "arg" a
 type IPFSPath = String
 
 -- GET /api/v0/object
-type GetObject =  "get"
-               :> IPFSArg "ipfs path of object" IPFSPath
-               :> Get '[PlainTextBinary] ByteString
+type GetObject =
+  "get" :> IPFSArg "ipfs path of object" IPFSPath
+        :> Get '[PlainTextBinary] ByteString
 
 -- GET /api/v0/id
-type GetNodeID = "id"
-               :> IPFSArgOpt "ID of node to get info for" String
-               :> Get '[JSON] IPFSNodeInfo
+type GetNodeID =
+  "id" :> IPFSArgOpt "ID of node to get info for" String
+       :> Get '[JSON] IPFSNodeInfo
 
 -- POST /api/v0/add
-type PostAddObjects =  "add"
-                    :> MultipartFormDataReqBody [AddFile]
-                    :> Post '[SequentialJSON] [AddObjectResponse]
+type PostAddObjects =
+  "add" :> MultipartFormDataReqBody [AddFile]
+        :> Post '[SequentialJSON] [AddObjectResponse]

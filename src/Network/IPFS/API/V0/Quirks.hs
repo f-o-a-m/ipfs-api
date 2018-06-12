@@ -17,19 +17,19 @@ import           Servant.API
 data PlainTextBinary
 
 instance Accept PlainTextBinary where
-    contentTypes _ = contentTypes (Proxy @PlainText)
+  contentTypes _ = contentTypes (Proxy @PlainText)
 
 instance MimeRender PlainTextBinary BL.ByteString where
-    mimeRender _ = id
+  mimeRender _ = id
 
 instance MimeUnrender PlainTextBinary BL.ByteString where
-    mimeUnrender _ = Right
+  mimeUnrender _ = Right
 
 instance MimeRender PlainTextBinary BS.ByteString where
-    mimeRender _ = BL.fromStrict
+  mimeRender _ = BL.fromStrict
 
 instance MimeUnrender PlainTextBinary BS.ByteString where
-    mimeUnrender _ = Right . BL.toStrict
+  mimeUnrender _ = Right . BL.toStrict
 
 ------------------------------------------------------------------------
 -- The response for multiple files submitted to /api/v0/add
@@ -39,18 +39,18 @@ instance MimeUnrender PlainTextBinary BS.ByteString where
 data SequentialJSON
 
 instance Accept SequentialJSON where
-    contentTypes _ = contentTypes (Proxy @JSON)
+  contentTypes _ = contentTypes (Proxy @JSON)
 
 instance FromJSON a => MimeUnrender SequentialJSON [a] where
-    mimeUnrender _ bl = -- we do the reverse after parsing so any non-json-parsing appear in the correct order
-        mapM (parseEither parseJSON) =<< (reverse <$> go (BL.toStrict bl) [])
+  mimeUnrender _ bl = -- we do the reverse after parsing so any non-json-parsing appear in the correct order
+    mapM (parseEither parseJSON) =<< (reverse <$> go (BL.toStrict bl) [])
 
-        where go bs acc | BS.null bs = Right acc
-                        | bs == "\n" = Right acc -- v0PostAddObjects will \n-terminate
-                        | otherwise  = let withResultOf = \case
-                                                AT.Fail rem ctxts err -> Left ("SequentialJSON failed to parse in " ++ show ctxts ++ ": " ++ err ++ "; rem=" ++ show rem)
-                                                AT.Partial c -> withResultOf (c "")
-                                                AT.Done rem res -> go rem (res:acc)
-                                        in withResultOf (AT.parse AP.json' bs)
+    where go bs acc | BS.null bs = Right acc
+                    | bs == "\n" = Right acc -- v0PostAddObjects will \n-terminate
+                    | otherwise  = let withResultOf = \case
+                                         AT.Fail rem ctxts err -> Left ("SequentialJSON failed to parse in " ++ show ctxts ++ ": " ++ err ++ "; rem=" ++ show rem)
+                                         AT.Partial c -> withResultOf (c "")
+                                         AT.Done rem res -> go rem (res:acc)
+                                    in withResultOf (AT.parse AP.json' bs)
 
 

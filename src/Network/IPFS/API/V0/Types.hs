@@ -22,12 +22,12 @@ data IPFSNodeInfo = IPFSNodeInfo { iniID              :: String
                                  deriving (Eq, Ord, Read, Show)
 
 instance FromJSON IPFSNodeInfo where
-    parseJSON = withObject "IPFSNodeInfo" $ \o ->
-        IPFSNodeInfo <$> o .: "ID"
-                     <*> o .: "PublicKey"
-                     <*> o .: "Addresses"
-                     <*> o .: "AgentVersion"
-                     <*> o .: "ProtocolVersion"
+  parseJSON = withObject "IPFSNodeInfo" $ \o ->
+    IPFSNodeInfo <$> o .: "ID"
+                 <*> o .: "PublicKey"
+                 <*> o .: "Addresses"
+                 <*> o .: "AgentVersion"
+                 <*> o .: "ProtocolVersion"
 
 --------------------------------------------------------------
 -- data for the response to /api/v0/add
@@ -38,9 +38,9 @@ data AddFile = AddFile { afName :: String
                        deriving (Eq, Ord, Read, Show)
 
 instance ToMultipartFormData [AddFile] where
-    toMultipartFormData files = partify <$> zip [1..] files
-        where partify (idx, file) = partFileRequestBody (fileIndex idx) (afName file) (RequestBodyLBS $ afData file)
-              fileIndex idx = "file" <> Text.pack (show idx)
+  toMultipartFormData files = partify <$> zip [1..] files
+    where partify (idx, file) = partFileRequestBody (fileIndex idx) (afName file) (RequestBodyLBS $ afData file)
+          fileIndex idx = "file" <> Text.pack (show idx)
 
 --------------------------------------------------------------
 -- data for a single response from /api/v0/add
@@ -52,7 +52,7 @@ data AddObjectResponse = AddObjectResponse { arName :: String
                                            deriving (Eq, Ord, Read, Show)
 
 instance FromJSON AddObjectResponse where
-    parseJSON = withObject "AddObjectResponse" $ \o ->
-        AddObjectResponse <$> o .: "Name"
-                          <*> o .: "Hash"
-                          <*> (read <$> o .: "Size") -- Size is Strung sometimes ಠ_______________ಠ
+  parseJSON = withObject "AddObjectResponse" $ \o ->
+    AddObjectResponse <$> o .: "Name"
+                      <*> o .: "Hash"
+                      <*> (read <$> o .: "Size") -- Size is Strung sometimes ಠ_______________ಠ
