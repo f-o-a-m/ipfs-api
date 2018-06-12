@@ -7,7 +7,7 @@ import           Servant.MultipartFormData
 import           Network.IPFS.API.V0.Quirks
 import           Network.IPFS.API.V0.Types
 
-type BlockApi = BlockGet :<|> BlockPut :<|> BlockStat :<|> BlockRm
+type BlockApi = (BlockGet :<|> BlockPut :<|> BlockStat :<|> BlockRm)
 
 type BlockGet =
   "block" :> "get"

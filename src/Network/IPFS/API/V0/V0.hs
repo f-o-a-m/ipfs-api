@@ -7,15 +7,17 @@ import           Servant.MultipartFormData
 import           Network.IPFS.API.V0.Quirks
 import           Network.IPFS.API.V0.Types
 
--- GET /api/v0/object
-type GetObject =
-  "get" :> IPFSArg "ipfs path of object" IPFSPath
-        :> Get '[PlainTextBinary] ByteString
+type RootApi = GetNodeID :<|> GetObject :<|> PostAddObjects
 
 -- GET /api/v0/id
 type GetNodeID =
   "id" :> IPFSArgOpt "ID of node to get info for" String
        :> Get '[JSON] IPFSNodeInfo
+
+-- GET /api/v0/object
+type GetObject =
+  "get" :> IPFSArg "ipfs path of object" IPFSPath
+        :> Get '[PlainTextBinary] ByteString
 
 -- POST /api/v0/add
 type PostAddObjects =

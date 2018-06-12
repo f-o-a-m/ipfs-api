@@ -14,5 +14,12 @@ v0BlockGet       :: Multihash -> ClientM ByteString
 v0BlockPut       :: BlockPutData -> ClientM BlockStatResponse
 v0BlockStat      :: Multihash -> ClientM BlockStatResponse
 v0BlockRm        :: Multihash -> ClientM BlockRmResponse
+v0PinAdd         :: String -> Bool -> Bool -> ClientM String
+v0PinLs          :: Maybe [Char] -> Maybe PinListType -> ClientM String
+v0PinRm          :: String -> Bool -> ClientM String
+v0PinUpdate      :: String -> String -> Bool -> ClientM String
+v0PinVerify      :: ClientM String
 
-v0GetNode :<|> v0GetObject :<|> v0PostAddObjects :<|> v0BlockGet :<|> v0BlockPut :<|> v0BlockStat :<|> v0BlockRm = client apiV0
+(v0GetNode :<|> v0GetObject :<|> v0PostAddObjects)
+  :<|> (v0BlockGet :<|> v0BlockPut :<|> v0BlockStat :<|> v0BlockRm)
+  :<|> (v0PinAdd :<|> v0PinLs :<|> v0PinRm :<|> v0PinUpdate :<|> v0PinVerify) = client apiV0

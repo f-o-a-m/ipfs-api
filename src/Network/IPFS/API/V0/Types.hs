@@ -105,3 +105,24 @@ instance FromJSON BlockRmResponse where
   parseJSON = withObject "BlockRmResponse" $ \o ->
     BlockRmResponse <$> o .:  "Hash"
                     <*> o .:? "Error"
+
+--------------------------------------------------------------
+-- type representing valid values to the type param in /api/v0/pin/ls
+data PinListType = PinListDirect
+                 | PinListIndirect
+                 | PinListRecursive
+                 | PinListAll
+                 deriving (Eq, Ord, Read, Show)
+
+instance ToHttpApiData PinListType where
+  toQueryParam PinListDirect    = "direct"
+  toQueryParam PinListIndirect  = "indirect"
+  toQueryParam PinListRecursive = "recursive"
+  toQueryParam PinListAll       = "all"
+
+instance FromHttpApiData PinListType where
+  parseQueryParam "direct"    = Right PinListDirect
+  parseQueryParam "indirect"  = Right PinListIndirect
+  parseQueryParam "recursive" = Right PinListRecursive
+  parseQueryParam "all"       = Right PinListAll
+  parseQueryParam _           = Left "Expected one of: direct, indirect, recusive, all"
