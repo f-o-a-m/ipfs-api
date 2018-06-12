@@ -8,7 +8,8 @@ import           Control.Monad.IO.Class                (MonadIO, liftIO)
 import           Data.Binary.Builder                   (toLazyByteString)
 import qualified Data.ByteString                       as BS
 import qualified Data.ByteString.Lazy                  as BL
-import           Data.IORef
+import           Data.IORef                            (modifyIORef', newIORef,
+                                                        readIORef)
 import           Data.Proxy                            (Proxy (..))
 import           Network.HTTP.Client                   (RequestBody (..))
 import           Network.HTTP.Client.MultipartFormData
