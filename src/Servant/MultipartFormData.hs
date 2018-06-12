@@ -6,7 +6,9 @@ module Servant.MultipartFormData
 
 import           Control.Monad.IO.Class                (MonadIO, liftIO)
 import           Data.Binary.Builder                   (toLazyByteString)
+import qualified Data.ByteString                       as BS
 import qualified Data.ByteString.Lazy                  as BL
+import           Data.IORef
 import           Data.Proxy                            (Proxy (..))
 import           Network.HTTP.Client                   (RequestBody (..))
 import           Network.HTTP.Client.MultipartFormData
@@ -39,5 +41,21 @@ instance (MonadIO m, RunClient m, MimeUnrender ct a, ToMultipartFormData b) =>
               RequestBodyLBS lbs -> return lbs
               RequestBodyBS  sbs -> return (BL.fromStrict sbs)
               RequestBodyBuilder _ builder -> return (toLazyByteString builder)
+              RequestBodyStream _ gp -> collectPopper gp
+              RequestBodyStreamChunked gp -> collectPopper gp
               RequestBodyIO io -> renderRequestBody =<< io
-              -- todo: support the Gives-/NeedsPopper-based RequestBodies?
+
+            collectPopper gp = do
+              acc <- newIORef []
+              gp (popInto acc)
+              BL.fromChunks . reverse <$> readIORef acc
+
+            popInto ref popper = do
+              popped <- popper
+              if BS.null popped
+                then return ()
+                else do
+                  modifyIORef' ref (popped:)
+                  popInto ref popper
+
+
