@@ -1,0 +1,16 @@
+sudo: required
+language: haskell
+
+before_install:
+- mkdir -p $HOME/.local/bin; export PATH=$HOME/.local/bin:$PATH;
+- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack';
+- travis_retry curl -L https://dist.ipfs.io/go-ipfs/v0.4.15/go-ipfs_v0.4.15_linux-amd64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/ipfs'
+- ipfs init
+- ipfs daemon &
+
+script:
+- stack -j2 --no-terminal --install-ghc test;
+
+cache:
+  directories:
+  - $HOME/.stack
