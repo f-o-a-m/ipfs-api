@@ -15,7 +15,6 @@ spec = describe "the v0 Base API" . withClient $ do
     let ret = head res
     arName ret `shouldBe` "testfile.txt"
     arHash ret `shouldBe` testfileTxtHash
-    arSize ret `shouldBe` (fromIntegral $ BL.length testfileTxtContents + 8)
 
   it "can cat objects" $ \c -> do
     res <- try c (v0CatObject testfileTxtHash)
