@@ -15,7 +15,7 @@ v0BlockPut       :: BlockPutData -> ClientM BlockStatResponse
 v0BlockStat      :: Multihash -> ClientM BlockStatResponse
 v0BlockRm        :: Multihash -> ClientM BlockRmResponse
 v0PinAdd         :: String -> Bool -> Bool -> ClientM String
-v0PinLs          :: Maybe [Char] -> Maybe PinListType -> ClientM String
+v0PinLs          :: Maybe [Char] -> Maybe PinListType -> ClientM PinLsResponse
 v0PinRm          :: String -> Bool -> ClientM String
 v0PinUpdate      :: String -> String -> Bool -> ClientM String
 v0PinVerify      :: ClientM String

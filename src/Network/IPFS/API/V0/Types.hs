@@ -3,6 +3,8 @@ module Network.IPFS.API.V0.Types where
 import           Control.Applicative                   ((<|>))
 import           Data.Aeson
 import           Data.ByteString.Lazy                  (ByteString)
+import qualified Data.HashMap.Strict                   as HM
+import qualified Data.Map.Strict                       as M
 import           Data.Semigroup                        (Semigroup (..))
 import qualified Data.Text                             as Text
 import           Network.HTTP.Client                   (RequestBody (RequestBodyLBS))
@@ -108,21 +110,55 @@ instance FromJSON BlockRmResponse where
 
 --------------------------------------------------------------
 -- type representing valid values to the type param in /api/v0/pin/ls
-data PinListType = PinListDirect
-                 | PinListIndirect
-                 | PinListRecursive
+
+data PinType = PinTypeDirect
+             | PinTypeIndirect
+             | PinTypeRecursive
+             deriving (Eq, Ord, Read, Show)
+
+instance FromJSON PinType where
+  parseJSON = \case
+    String s -> case s of
+      "direct"    -> pure PinTypeDirect
+      "indirect"  -> pure PinTypeIndirect
+      "recursive" -> pure PinTypeRecursive
+      _           -> fail "Expected one of: direct, indirect, recursive"
+    _ -> fail "Expected String for PinType"
+
+instance ToJSON PinType where
+  toJSON PinTypeDirect    = String "direct"
+  toJSON PinTypeIndirect  = String "indirect"
+  toJSON PinTypeRecursive = String "recursive"
+
+data PinListType = PinListByType PinType
                  | PinListAll
                  deriving (Eq, Ord, Read, Show)
 
 instance ToHttpApiData PinListType where
-  toQueryParam PinListDirect    = "direct"
-  toQueryParam PinListIndirect  = "indirect"
-  toQueryParam PinListRecursive = "recursive"
-  toQueryParam PinListAll       = "all"
+  toQueryParam (PinListByType PinTypeDirect)    = "direct"
+  toQueryParam (PinListByType PinTypeIndirect)  = "indirect"
+  toQueryParam (PinListByType PinTypeRecursive) = "recursive"
+  toQueryParam PinListAll                       = "all"
 
 instance FromHttpApiData PinListType where
-  parseQueryParam "direct"    = Right PinListDirect
-  parseQueryParam "indirect"  = Right PinListIndirect
-  parseQueryParam "recursive" = Right PinListRecursive
+  parseQueryParam "direct"    = Right $ PinListByType PinTypeDirect
+  parseQueryParam "indirect"  = Right $ PinListByType PinTypeIndirect
+  parseQueryParam "recursive" = Right $ PinListByType PinTypeRecursive
   parseQueryParam "all"       = Right PinListAll
   parseQueryParam _           = Left "Expected one of: direct, indirect, recusive, all"
+
+--------------------------------------------------------------
+-- type representing a successful response from /api/v0/pin/ls
+newtype PinLsResponse = PinLsResponse (M.Map Multihash PinType)
+  deriving (Eq, Ord, Read, Show)
+
+instance FromJSON PinLsResponse where
+  parseJSON = withObject "PinLsResponse" $ \o -> do
+    keys <- o .: "Keys"
+    case keys of
+      Object k -> PinLsResponse . M.fromList <$> (mapM parseKeys $ HM.toList k)
+      _ -> fail "Expected \"Keys\" to be an Object"
+
+    where parseKeys (k, v) = flip (withObject "PinListType") v $ \t -> do
+            t' <- parseJSON =<< t .: "Type"
+            return (Text.unpack k, t')

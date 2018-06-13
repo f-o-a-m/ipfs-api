@@ -25,6 +25,7 @@ dependencies:
 - attoparsec >= 0.13 && < 0.14
 - binary >= 0.8.5.0 && < 0.9
 - bytestring >= 0.10.0.0 && < 0.11
+- containers >= 0.5.10 && < 0.6
 - http-client >= 0.5.12 && < 0.6
 - http-media >= 0.7 && < 0.8
 - http-types >= 0.12 && < 0.13
@@ -32,6 +33,7 @@ dependencies:
 - servant-client >= 0.13 && < 0.14
 - servant-client-core >= 0.13 && < 0.14
 - text >= 1.2.3.0 && < 1.3
+- unordered-containers >= 0.2.9 && < 0.3
 
 default-extensions:
 - DataKinds

@@ -20,7 +20,7 @@ type PinLs =
   "pin" :> "ls"
         :> IPFSArgOpt "path" String
         :> QueryParam "type" PinListType
-        :> Get '[JSON] String -- PinLsResponse
+        :> Get '[JSON] PinLsResponse
 
 type PinRm =
   "pin" :> "rm"
