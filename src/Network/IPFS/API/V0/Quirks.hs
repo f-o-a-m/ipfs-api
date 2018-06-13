@@ -63,7 +63,8 @@ instance Accept RespondsWithNothing where
   contentTypes _ = contentTypes (Proxy @JSON) <> contentTypes (Proxy @PlainText)
 
 instance MimeUnrender RespondsWithNothing () where
-  mimeUnrender _ _ = Right ()
+  mimeUnrender _ "" = Right ()
+  mimeUnrender _ c  = Left $ "Expected absolutely nothing, but got:" <> show c
 
 instance MimeRender RespondsWithNothing a where
   mimeRender _ _ = ""
