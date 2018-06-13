@@ -71,3 +71,6 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - ipfs-api
+    - hspec
+    - hspec-contrib
+    - hspec-discover
