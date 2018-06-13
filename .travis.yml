@@ -7,6 +7,10 @@ before_install:
 - travis_retry curl -L https://dist.ipfs.io/go-ipfs/v0.4.15/go-ipfs_v0.4.15_linux-amd64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/ipfs'
 - ipfs init
 - ipfs daemon &
+- stack setup
+
+install:
+- echo nothing to install lol
 
 script:
 - stack -j2 --no-terminal --install-ghc test;
