@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 77aa9fbd358e93eaf9044f501b452e2fcdcb7a5cf52f89223214a530fbcedb6f
+-- hash: 823f2c481710bbcd74f7663b574236b2a6f710395e2fa9a72213dafaa7ec764e
 
 name:           ipfs-api
 version:        0.1.0.0
@@ -96,6 +96,7 @@ test-suite ipfs-api-test
     , hspec
     , hspec-contrib
     , hspec-discover
+    , hspec-expectations
     , http-client >=0.5.12 && <0.6
     , http-media >=0.7 && <0.8
     , http-types >=0.12 && <0.13
@@ -105,6 +106,7 @@ test-suite ipfs-api-test
     , servant-client-core >=0.13 && <0.14
     , text >=1.2.3.0 && <1.3
   other-modules:
+      Utils
       V0.BaseAPISpec
       V0.BlockAPISpec
       V0.PinAPISpec

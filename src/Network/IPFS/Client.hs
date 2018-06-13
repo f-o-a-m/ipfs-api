@@ -8,7 +8,7 @@ import           Servant.API               ((:<|>) (..))
 import           Servant.Client
 
 v0GetNode        :: Maybe String -> ClientM IPFSNodeInfo
-v0GetObject      :: Multihash -> ClientM ByteString
+v0CatObject      :: Multihash -> ClientM ByteString
 v0PostAddObjects :: [AddFile] -> ClientM [AddObjectResponse]
 v0BlockGet       :: Multihash -> ClientM ByteString
 v0BlockPut       :: BlockPutData -> ClientM BlockStatResponse
@@ -20,6 +20,6 @@ v0PinRm          :: String -> Bool -> ClientM String
 v0PinUpdate      :: String -> String -> Bool -> ClientM String
 v0PinVerify      :: ClientM String
 
-(v0GetNode :<|> v0GetObject :<|> v0PostAddObjects)
+(v0GetNode :<|> v0CatObject :<|> v0PostAddObjects)
   :<|> (v0BlockGet :<|> v0BlockPut :<|> v0BlockStat :<|> v0BlockRm)
   :<|> (v0PinAdd :<|> v0PinLs :<|> v0PinRm :<|> v0PinUpdate :<|> v0PinVerify) = client apiV0

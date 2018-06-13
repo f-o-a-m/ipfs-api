@@ -1,15 +1,18 @@
 module Network.IPFS.API.V0.Types where
 
+import           Control.Applicative                   ((<|>))
 import           Data.Aeson
 import           Data.ByteString.Lazy                  (ByteString)
 import           Data.Semigroup                        (Semigroup (..))
 import qualified Data.Text                             as Text
 import           Network.HTTP.Client                   (RequestBody (RequestBodyLBS))
 import           Network.HTTP.Client.MultipartFormData (partFileRequestBody)
+import           Network.IPFS.API.V0.Quirks
 import           Servant.API
 import           Servant.MultipartFormData
 
-import           Network.IPFS.API.V0.Quirks
+import           Debug.Trace
+
 
 -- This is a convenience synonym around the fact that IPFS's RPC API uses the argument
 -- "arg" _ALL_ _OVER_ _THE_ _PLACE_. In some cases, it even uses it more than once in the
@@ -69,10 +72,10 @@ data AddObjectResponse = AddObjectResponse { arName :: String
                                            deriving (Eq, Ord, Read, Show)
 
 instance FromJSON AddObjectResponse where
-  parseJSON = withObject "AddObjectResponse" $ \o ->
+  parseJSON c = trace (show c) (flip $ withObject "AddObjectResponse") c $ \o ->
     AddObjectResponse <$> o .: "Name"
                       <*> o .: "Hash"
-                      <*> (read <$> o .: "Size") -- Size is Strung sometimes ಠ_______________ಠ
+                      <*> (o .: "Size" <|> (read <$> o .: "Size")) -- Size is Strung sometimes ಠ_______________ಠ
 
 --------------------------------------------------------------
 -- multipart form data for /api/v0/block/put

@@ -74,3 +74,4 @@ tests:
     - hspec
     - hspec-contrib
     - hspec-discover
+    - hspec-expectations
