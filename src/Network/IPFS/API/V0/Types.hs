@@ -11,9 +11,6 @@ import           Network.IPFS.API.V0.Quirks
 import           Servant.API
 import           Servant.MultipartFormData
 
-import           Debug.Trace
-
-
 -- This is a convenience synonym around the fact that IPFS's RPC API uses the argument
 -- "arg" _ALL_ _OVER_ _THE_ _PLACE_. In some cases, it even uses it more than once in the
 -- same endpoint! The way you'd use this, for example, in the '/api/v0/files/cp' endpoint, is
@@ -72,7 +69,7 @@ data AddObjectResponse = AddObjectResponse { arName :: String
                                            deriving (Eq, Ord, Read, Show)
 
 instance FromJSON AddObjectResponse where
-  parseJSON c = trace (show c) (flip $ withObject "AddObjectResponse") c $ \o ->
+  parseJSON = withObject "AddObjectResponse" $ \o ->
     AddObjectResponse <$> o .: "Name"
                       <*> o .: "Hash"
                       <*> (o .: "Size" <|> (read <$> o .: "Size")) -- Size is Strung sometimes ಠ_______________ಠ

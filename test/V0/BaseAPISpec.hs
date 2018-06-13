@@ -13,7 +13,6 @@ spec = describe "the v0 Base API" . withClient $ do
     res <- try c (v0PostAddObjects [AddFile "testfile.txt" testfileTxtContents])
     res `shouldSatisfy` (not . null)
     let ret = head res
-    print ret
     arName ret `shouldBe` "testfile.txt"
     arHash ret `shouldBe` testfileTxtHash
     arSize ret `shouldBe` (fromIntegral $ BL.length testfileTxtContents + 8)
