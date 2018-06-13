@@ -9,6 +9,7 @@ import qualified Data.ByteString              as BS
 import qualified Data.ByteString.Lazy         as BL
 import           Data.List.NonEmpty           ((<|))
 import           Data.Proxy                   (Proxy (..))
+import           Data.Semigroup               ((<>))
 import           Network.HTTP.Media.MediaType
 import           Servant.API
 
@@ -55,4 +56,14 @@ instance FromJSON a => MimeUnrender SequentialJSON [a] where
                                          AT.Done rem res -> go rem (res:acc)
                                     in withResultOf (AT.parse AP.json' bs)
 
+-- For when we expect an endpoint to return absolutely nothing under normal cirucmstances
+data RespondsWithNothing
 
+instance Accept RespondsWithNothing where
+  contentTypes _ = contentTypes (Proxy @JSON) <> contentTypes (Proxy @PlainText)
+
+instance MimeUnrender RespondsWithNothing () where
+  mimeUnrender _ _ = Right ()
+
+instance MimeRender RespondsWithNothing a where
+  mimeRender _ _ = ""

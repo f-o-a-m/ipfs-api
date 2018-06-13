@@ -148,6 +148,15 @@ instance FromHttpApiData PinListType where
   parseQueryParam _           = Left "Expected one of: direct, indirect, recusive, all"
 
 --------------------------------------------------------------
+-- type representing a successful response from /api/v0/pin/add and .../pin/rm
+newtype PinModResponse = PinModResponse [Multihash]
+  deriving (Eq, Ord, Read, Show)
+
+instance FromJSON PinModResponse where
+  parseJSON = withObject "PinModResponse" $ \o ->
+    PinModResponse <$> (mapM parseJSON =<< o .: "Pins")
+
+--------------------------------------------------------------
 -- type representing a successful response from /api/v0/pin/ls
 newtype PinLsResponse = PinLsResponse (M.Map Multihash PinType)
   deriving (Eq, Ord, Read, Show)

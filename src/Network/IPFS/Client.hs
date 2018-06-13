@@ -14,11 +14,11 @@ v0BlockGet       :: Multihash -> ClientM ByteString
 v0BlockPut       :: BlockPutData -> ClientM BlockStatResponse
 v0BlockStat      :: Multihash -> ClientM BlockStatResponse
 v0BlockRm        :: Multihash -> ClientM BlockRmResponse
-v0PinAdd         :: String -> Bool -> Bool -> ClientM String
+v0PinAdd         :: String -> Bool -> Bool -> ClientM PinModResponse
 v0PinLs          :: Maybe [Char] -> Maybe PinListType -> ClientM PinLsResponse
-v0PinRm          :: String -> Bool -> ClientM String
+v0PinRm          :: String -> Bool -> ClientM PinModResponse
 v0PinUpdate      :: String -> String -> Bool -> ClientM String
-v0PinVerify      :: ClientM String
+v0PinVerify      :: ClientM ()
 
 (v0GetNode :<|> v0CatObject :<|> v0PostAddObjects)
   :<|> (v0BlockGet :<|> v0BlockPut :<|> v0BlockStat :<|> v0BlockRm)
