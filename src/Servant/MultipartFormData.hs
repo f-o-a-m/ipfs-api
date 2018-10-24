@@ -16,8 +16,8 @@ import           Network.HTTP.Client.MultipartFormData
 import           Network.HTTP.Media.MediaType
 import           Servant.API
 import           Servant.Client
-import           Servant.Client.Core                   hiding (RequestBody (RequestBodyLBS))
-import qualified Servant.Client.Core                   as Servant (RequestBody (RequestBodyLBS))
+import           Servant.Client.Core                   hiding (RequestBody (..))
+import qualified Servant.Client.Core                   as Servant 
 
 -- | A type that can be converted to a multipart/form-data value.
 class ToMultipartFormData a where
