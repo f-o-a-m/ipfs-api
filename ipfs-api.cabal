@@ -1,8 +1,8 @@
--- This file has been generated from package.yaml by hpack version 0.20.0.
+-- This file has been generated from package.yaml by hpack version 0.28.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7d0d6e813b6fd3d520e40683cb6a397f4c8b56841b57f2cce688b70264b47ffd
+-- hash: 2d53debac40d2564a412e9ef44dc4af490d2ecd7d50e7ec424d5b9124687177d
 
 name:           ipfs-api
 version:        0.1.0.0
@@ -17,7 +17,6 @@ license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
-
 extra-source-files:
     ChangeLog.md
     README.md
