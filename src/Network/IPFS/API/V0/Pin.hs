@@ -14,27 +14,27 @@ type PinAdd =
         :> IPFSArg "path" String
         :> QueryFlag "recursive"
         :> QueryFlag "progress"
-        :> Get '[JSON] PinModResponse
+        :> Post '[JSON] PinModResponse
 
 type PinLs =
   "pin" :> "ls"
         :> IPFSArgOpt "path" String
         :> QueryParam "type" PinListType
-        :> Get '[JSON] PinLsResponse
+        :> Post '[JSON] PinLsResponse
 
 type PinRm =
   "pin" :> "rm"
         :> IPFSArg "unpin" String
         :> QueryFlag "recursive"
-        :> Get '[JSON] PinModResponse
+        :> Post '[JSON] PinModResponse
 
 type PinUpdate =
   "pin" :> "update"
         :> IPFSArg "old" String
         :> IPFSArg "new" String
         :> QueryFlag "unpin"
-        :> Get '[JSON] String -- PinUpdateResponse
+        :> Post '[JSON] String -- PinUpdateResponse
 
 type PinVerify =
   "pin" :> "verify"
-        :> Get '[RespondsWithNothing] () -- it response with nothing??
+        :> Post '[RespondsWithNothing] () -- it response with nothing??
