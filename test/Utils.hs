@@ -26,7 +26,13 @@ withClient spec = before (return globalEnv) spec
 testfileTxtHash :: String
 testfileTxtHash = "Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP"
 
+testJSONHash :: String
+testJSONHash = "bafyreif5tiacshzdgycildbxumfz7bp4vbtljdiybhnrf2i2xxumixrmiq"
+
 -- the exact contents of that file
 testfileTxtContents :: BL.ByteString
 testfileTxtContents = unsafePerformIO $ BL.readFile "test/fixtures/testfile"
+
+testJSONFileContents :: BL.ByteString
+testJSONFileContents = unsafePerformIO $ BL.readFile "test/fixtures/test.json"
 {-# NOINLINE testfileTxtContents #-}
