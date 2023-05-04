@@ -4,7 +4,7 @@ language: haskell
 before_install:
 - mkdir -p $HOME/.local/bin; export PATH=$HOME/.local/bin:$PATH;
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack';
-- travis_retry curl -L https://dist.ipfs.io/go-ipfs/v0.4.15/go-ipfs_v0.4.15_linux-amd64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/ipfs'
+- travis_retry curl -L https://dist.ipfs.io/go-ipfs/v0.19.1/go-ipfs_v0.19.1_linux-amd64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/ipfs'
 - ipfs init
 - ipfs daemon &
 - stack setup
