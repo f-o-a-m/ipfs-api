@@ -16,7 +16,7 @@ type BlockGet =
 
 type BlockPut =
   "block" :> "put"
-          :> MultipartFormDataReqBody BlockPutData
+          :> MultipartFormDataReqBody PutData
           :> Post '[JSON] BlockStatResponse
 
 type BlockStat =

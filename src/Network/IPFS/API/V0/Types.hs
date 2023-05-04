@@ -77,12 +77,15 @@ instance FromJSON AddObjectResponse where
                       <*> (o .: "Size" <|> (read <$> o .: "Size")) -- Size is Strung sometimes ಠ_______________ಠ
 
 --------------------------------------------------------------
--- multipart form data for /api/v0/block/put
-newtype BlockPutData = BlockPutData ByteString
+-- multipart form data for 
+-- /api/v0/block/put
+-- /api/v0/dag/put
+
+newtype PutData = PutData ByteString
   deriving (Eq, Ord, Read, Show)
 
-instance ToMultipartFormData BlockPutData where
-  toMultipartFormData (BlockPutData d) = [partFileRequestBody "arg" "arg" (RequestBodyLBS d)]
+instance ToMultipartFormData PutData where
+  toMultipartFormData (PutData d) = [partFileRequestBody "arg" "arg" (RequestBodyLBS d)]
 
 --------------------------------------------------------------
 -- response for /api/v0/block/put and .../block/stat
@@ -171,3 +174,28 @@ instance FromJSON PinLsResponse where
     where parseKeys (k, v) = flip (withObject "PinListType") v $ \t -> do
             t' <- parseJSON =<< t .: "Type"
             return (Text.unpack k, t')
+
+--------------------------------------------------------------
+
+data DagDataEncoding
+  = DagJSON
+  | DagPB
+  | DagCBOR
+  deriving (Eq, Ord, Read)
+
+instance Show DagDataEncoding where
+  show DagJSON = "dag-json"
+  show DagPB   = "dag-pb"
+  show DagCBOR = "dag-cbor"
+
+instance ToHttpApiData DagDataEncoding where
+  toQueryParam = Text.pack . show
+
+data CIDResponse = CIDResponse
+  { cid :: Multihash
+  } deriving (Eq, Show)
+
+instance FromJSON CIDResponse where
+  parseJSON = withObject "CIDResponse" $ \o -> do
+    cidObject <- o .: "Cid"
+    CIDResponse <$> cidObject .: "/"
