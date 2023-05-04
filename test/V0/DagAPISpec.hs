@@ -8,10 +8,7 @@ import           Utils
 
 spec :: Spec
 spec = describe "the v0 Dag API" . withClient $ do
-  it "can put dags" $ \c -> do
-    res <- try c $ v0DagPut (Just DagJSON) [AddFile "test.json" testJSONFileContents]
-    res `shouldBe` CIDResponse testJSONHash
-
-  it "can get dags" $ \c -> do
-    res <- try c $ v0DagGet testJSONHash (Just DagJSON)
-    res `shouldBe` testJSONFileContents
+  it "can put and get" $ \c -> do
+    (CIDResponse cid) <- try c $ v0DagPut (Just DagJSON) [AddFile "test.json" testJSONFileContents]
+    getRes <- try c $ v0DagGet cid (Just DagJSON)
+    getRes `shouldBe` testJSONFileContents
