@@ -4,6 +4,7 @@ import           Control.Applicative                   ((<|>))
 import           Data.Aeson
 import           Data.ByteString.Lazy                  (ByteString)
 import qualified Data.HashMap.Strict                   as HM
+import qualified Data.IPLD.CID                         as IPLD
 import qualified Data.Map.Strict                       as M
 import           Data.Semigroup                        (Semigroup (..))
 import qualified Data.Text                             as Text
@@ -192,10 +193,12 @@ instance ToHttpApiData DagDataEncoding where
   toQueryParam = Text.pack . show
 
 data CIDResponse = CIDResponse
-  { cid :: Multihash
+  { cid :: IPLD.CID
   } deriving (Eq, Show)
 
 instance FromJSON CIDResponse where
   parseJSON = withObject "CIDResponse" $ \o -> do
     cidObject <- o .: "Cid"
-    CIDResponse <$> cidObject .: "/"
+    IPLD.cidFromText <$> cidObject .: "/" >>= \case
+      Left err -> fail err
+      Right cid -> return $ CIDResponse cid
