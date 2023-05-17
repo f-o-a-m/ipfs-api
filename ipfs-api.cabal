@@ -1,8 +1,10 @@
--- This file has been generated from package.yaml by hpack version 0.28.2.
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2d53debac40d2564a412e9ef44dc4af490d2ecd7d50e7ec424d5b9124687177d
+-- hash: d34d5119cb814530d0c26cc23e7b28f795d2989534ffceb6fbcea8e7a650b3b7
 
 name:           ipfs-api
 version:        0.1.0.0
@@ -16,10 +18,9 @@ copyright:      2018 Ilya Ostrovskiy
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
-cabal-version:  >= 1.10
 extra-source-files:
-    ChangeLog.md
     README.md
+    ChangeLog.md
 
 source-repository head
   type: git
@@ -28,25 +29,40 @@ source-repository head
 library
   hs-source-dirs:
       src
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications TypeFamilies TypeOperators
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      PolyKinds
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
   build-depends:
-      aeson >=1.2 && <1.3
-    , attoparsec >=0.13 && <0.14
-    , base >=4.7 && <5
-    , binary >=0.8.5.0 && <0.9
-    , bytestring >=0.10.0.0 && <0.11
-    , containers >=0.5.10 && <0.6
-    , http-client >=0.5.12 && <0.6
-    , http-media >=0.7 && <0.8
-    , http-types >=0.12 && <0.13
-    , servant >=0.13 && <0.14
-    , servant-client >=0.13 && <0.14
-    , servant-client-core >=0.13 && <0.14
-    , text >=1.2.3.0 && <1.3
-    , unordered-containers >=0.2.9 && <0.3
+      aeson
+    , attoparsec
+    , base
+    , binary
+    , bytestring
+    , containers
+    , http-client
+    , http-media
+    , http-types
+    , ipld-cid
+    , servant
+    , servant-client
+    , servant-client-core
+    , string-conversions
+    , text
+    , unordered-containers
   exposed-modules:
       Network.IPFS.API.V0
       Network.IPFS.API.V0.Block
+      Network.IPFS.API.V0.Dag
       Network.IPFS.API.V0.Pin
       Network.IPFS.API.V0.Quirks
       Network.IPFS.API.V0.Types
@@ -61,24 +77,38 @@ executable ipfs-api-exe
   main-is: Main.hs
   hs-source-dirs:
       app
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications TypeFamilies TypeOperators
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      PolyKinds
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson >=1.2 && <1.3
-    , attoparsec >=0.13 && <0.14
-    , base >=4.7 && <5
-    , binary >=0.8.5.0 && <0.9
-    , bytestring >=0.10.0.0 && <0.11
-    , containers >=0.5.10 && <0.6
-    , http-client >=0.5.12 && <0.6
-    , http-media >=0.7 && <0.8
-    , http-types >=0.12 && <0.13
+      aeson
+    , attoparsec
+    , base
+    , binary
+    , bytestring
+    , containers
+    , http-client
+    , http-media
+    , http-types
     , ipfs-api
-    , servant >=0.13 && <0.14
-    , servant-client >=0.13 && <0.14
-    , servant-client-core >=0.13 && <0.14
-    , text >=1.2.3.0 && <1.3
-    , unordered-containers >=0.2.9 && <0.3
+    , ipld-cid
+    , servant
+    , servant-client
+    , servant-client-core
+    , string-conversions
+    , text
+    , unordered-containers
   other-modules:
       Paths_ipfs_api
   default-language: Haskell2010
@@ -88,32 +118,47 @@ test-suite ipfs-api-test
   main-is: Spec.hs
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses OverloadedStrings PolyKinds ScopedTypeVariables TypeApplications TypeFamilies TypeOperators
+  default-extensions:
+      DataKinds
+      FlexibleContexts
+      FlexibleInstances
+      GeneralizedNewtypeDeriving
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      PolyKinds
+      ScopedTypeVariables
+      TypeApplications
+      TypeFamilies
+      TypeOperators
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson >=1.2 && <1.3
-    , attoparsec >=0.13 && <0.14
-    , base >=4.7 && <5
-    , binary >=0.8.5.0 && <0.9
-    , bytestring >=0.10.0.0 && <0.11
-    , containers >=0.5.10 && <0.6
+      aeson
+    , attoparsec
+    , base
+    , binary
+    , bytestring
+    , containers
     , hspec
     , hspec-contrib
     , hspec-discover
     , hspec-expectations
-    , http-client >=0.5.12 && <0.6
-    , http-media >=0.7 && <0.8
-    , http-types >=0.12 && <0.13
+    , http-client
+    , http-media
+    , http-types
     , ipfs-api
-    , servant >=0.13 && <0.14
-    , servant-client >=0.13 && <0.14
-    , servant-client-core >=0.13 && <0.14
-    , text >=1.2.3.0 && <1.3
-    , unordered-containers >=0.2.9 && <0.3
+    , ipld-cid
+    , servant
+    , servant-client
+    , servant-client-core
+    , string-conversions
+    , text
+    , unordered-containers
   other-modules:
       Utils
       V0.BaseAPISpec
       V0.BlockAPISpec
+      V0.DagAPISpec
       V0.PinAPISpec
       Paths_ipfs_api
   default-language: Haskell2010
