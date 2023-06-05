@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d34d5119cb814530d0c26cc23e7b28f795d2989534ffceb6fbcea8e7a650b3b7
+-- hash: 9eb0a71818160fa05d9a767cf89680c42d2f54e5f096fe3f5d0e1120b44a3c1c
 
 name:           ipfs-api
 version:        0.1.0.0
@@ -42,6 +42,7 @@ library
       TypeApplications
       TypeFamilies
       TypeOperators
+  ghc-options: -Werror
   build-depends:
       aeson
     , attoparsec
