@@ -12,12 +12,12 @@ type RootApi = GetNodeID :<|> CatObject :<|> PostAddObjects
 -- GET /api/v0/id
 type GetNodeID =
   "id" :> IPFSArgOpt "ID of node to get info for" String
-       :> Get '[JSON] IPFSNodeInfo
+       :> Post '[JSON] IPFSNodeInfo
 
--- GET /api/v0/object
+-- POST /api/v0/cat
 type CatObject =
   "cat" :> IPFSArg "ipfs path of object" IPFSPath
-        :> Get '[PlainTextBinary] ByteString
+        :> Post '[PlainTextBinary] ByteString
 
 -- POST /api/v0/add
 type PostAddObjects =

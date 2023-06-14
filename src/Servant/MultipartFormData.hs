@@ -17,7 +17,7 @@ import           Network.HTTP.Media.MediaType
 import           Servant.API
 import           Servant.Client
 import           Servant.Client.Core                   hiding (RequestBody (..))
-import qualified Servant.Client.Core                   as Servant 
+import qualified Servant.Client.Core                   as Servant
 
 -- | A type that can be converted to a multipart/form-data value.
 class ToMultipartFormData a where
@@ -30,6 +30,7 @@ data MultipartFormDataReqBody a
 instance (MonadIO m, RunClient m, MimeUnrender ct a, ToMultipartFormData b) =>
   HasClient m (MultipartFormDataReqBody b :> Post (ct ': cts) a) where
     type Client m (MultipartFormDataReqBody b :> Post (ct ': cts) a) = b -> m a
+    hoistClientMonad pm _ f cl = hoistClientMonad pm (Proxy :: Proxy (Post (ct ': cts) a)) f . cl
     clientWithRoute pm _ req mpdata = do
       boundary <- liftIO webkitBoundary
       reqBody <- liftIO $ renderParts boundary (toMultipartFormData mpdata)

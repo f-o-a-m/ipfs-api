@@ -16,7 +16,7 @@ globalEnv :: ClientEnv
 globalEnv = unsafePerformIO $ do
   manager <- newManager defaultManagerSettings
   let baseUrl = BaseUrl Http "localhost" 5001 ""
-  return $ ClientEnv manager baseUrl Nothing
+  return $ mkClientEnv manager baseUrl
 {-# NOINLINE globalEnv #-}
 
 withClient :: SpecWith ClientEnv -> Spec
@@ -26,7 +26,13 @@ withClient spec = before (return globalEnv) spec
 testfileTxtHash :: String
 testfileTxtHash = "Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP"
 
+testJSONHash :: String
+testJSONHash = "zdpuAyBZjeKaoAZkKGyNH82CP1QUhVvLHATdFTZcbpv84Tgwm"
+
 -- the exact contents of that file
 testfileTxtContents :: BL.ByteString
 testfileTxtContents = unsafePerformIO $ BL.readFile "test/fixtures/testfile"
+
+testJSONFileContents :: BL.ByteString
+testJSONFileContents = unsafePerformIO $ BL.readFile "test/fixtures/test.json"
 {-# NOINLINE testfileTxtContents #-}

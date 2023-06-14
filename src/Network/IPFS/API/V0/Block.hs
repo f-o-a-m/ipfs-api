@@ -12,19 +12,19 @@ type BlockApi = (BlockGet :<|> BlockPut :<|> BlockStat :<|> BlockRm)
 type BlockGet =
   "block" :> "get"
           :> IPFSArg "block-multihash" Multihash
-          :> Get '[PlainTextBinary] ByteString
+          :> Post '[PlainTextBinary] ByteString
 
 type BlockPut =
   "block" :> "put"
-          :> MultipartFormDataReqBody BlockPutData
+          :> MultipartFormDataReqBody PutData
           :> Post '[JSON] BlockStatResponse
 
 type BlockStat =
   "block" :> "stat"
           :> IPFSArg "block-multihash" Multihash
-          :> Get '[JSON] BlockStatResponse
+          :> Post '[JSON] BlockStatResponse
 
 type BlockRm =
   "block" :> "rm"
           :> IPFSArg "block-multihash" Multihash
-          :> Get '[JSON] BlockRmResponse
+          :> Post '[JSON] BlockRmResponse
