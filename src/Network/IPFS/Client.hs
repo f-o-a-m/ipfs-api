@@ -20,7 +20,7 @@ v0PinRm          :: String -> Bool -> ClientM PinModResponse
 v0PinUpdate      :: String -> String -> Bool -> ClientM String
 v0PinVerify      :: ClientM ()
 v0DagGet         :: Multihash -> Maybe DagDataEncoding -> ClientM ByteString
-v0DagPut         :: Maybe DagDataEncoding -> [AddFile] -> ClientM CIDResponse
+v0DagPut         :: Maybe DagDataEncoding -> Maybe DagHash -> [AddFile] -> ClientM CIDResponse
 
 (v0GetNode :<|> v0CatObject :<|> v0PostAddObjects)
   :<|> (v0BlockGet :<|> v0BlockPut :<|> v0BlockStat :<|> v0BlockRm)

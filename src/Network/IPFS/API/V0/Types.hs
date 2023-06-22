@@ -192,6 +192,46 @@ instance Show DagDataEncoding where
 instance ToHttpApiData DagDataEncoding where
   toQueryParam = Text.pack . show
 
+data DagHash
+  = Identity
+  | Sha2_256
+  | Sha2_512
+  | Sha3_224
+  | Sha3_256
+  | Sha3_384
+  | Sha3_512
+  | Keccak_224
+  | Keccak_256
+  | Keccak_384
+  | Keccak_512
+  | Blake2b_256
+  | Blake2b_512
+  | Blake2s_128
+  | Blake2s_256
+  | Black3_256
+  deriving (Eq, Ord, Read)
+
+instance Show DagHash where
+  show Identity    = "identity"
+  show Sha2_256    = "sha2-256"
+  show Sha2_512    = "sha2-512"
+  show Sha3_224    = "sha3-224"
+  show Sha3_256    = "sha3-256"
+  show Sha3_384    = "sha3-384"
+  show Sha3_512    = "sha3-512"
+  show Keccak_224  = "keccak-224"
+  show Keccak_256  = "keccak-256"
+  show Keccak_384  = "keccak-384"
+  show Keccak_512  = "keccak-512"
+  show Blake2b_256 = "blake2b-256"
+  show Blake2b_512 = "blake2b-512"
+  show Blake2s_128 = "blake2s-128"
+  show Blake2s_256 = "blake2s-256"
+  show Black3_256  = "black3-256"
+
+instance ToHttpApiData DagHash where
+  toQueryParam = Text.pack . show
+
 data CIDResponse = CIDResponse
   { cid :: IPLD.CID
   } deriving (Eq, Show)

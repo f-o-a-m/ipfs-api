@@ -17,5 +17,6 @@ type GetDag =
 type PutDag =
   "dag" :> "put"
         :> QueryParam "input-codec" DagDataEncoding
+        :> QueryParam "hash" DagHash
         :> MultipartFormDataReqBody [AddFile]
         :> Post '[JSON] CIDResponse
