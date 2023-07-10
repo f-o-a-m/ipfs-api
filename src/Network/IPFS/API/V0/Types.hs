@@ -208,7 +208,7 @@ data DagHash
   | Blake2b_512
   | Blake2s_128
   | Blake2s_256
-  | Black3_256
+  | Blake3_256
   deriving (Eq, Ord, Read)
 
 instance Show DagHash where
@@ -227,7 +227,7 @@ instance Show DagHash where
   show Blake2b_512 = "blake2b-512"
   show Blake2s_128 = "blake2s-128"
   show Blake2s_256 = "blake2s-256"
-  show Black3_256  = "black3-256"
+  show Blake3_256  = "blake3-256"
 
 instance ToHttpApiData DagHash where
   toQueryParam = Text.pack . show
