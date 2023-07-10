@@ -12,7 +12,7 @@ spec :: Spec
 spec = describe "the v0 Dag API" . withClient $ do
 
   it "can put dags" $ \c -> do
-    (CIDResponse cid) <- try c $ v0DagPut (Just DagJSON) [AddFile "test.json" testJSONFileContents]
+    (CIDResponse cid) <- try c $ v0DagPut (Just DagJSON) (Just Keccak_256) [AddFile "test.json" testJSONFileContents]
     let cidString = cs . IPLD.cidToText $ cid
     cidString `shouldBe` testJSONHash
 

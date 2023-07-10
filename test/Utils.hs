@@ -27,7 +27,7 @@ testfileTxtHash :: String
 testfileTxtHash = "Qma4hjFTnCasJ8PVp3mZbZK5g2vGDT4LByLJ7m8ciyRFZP"
 
 testJSONHash :: String
-testJSONHash = "zdpuAyBZjeKaoAZkKGyNH82CP1QUhVvLHATdFTZcbpv84Tgwm"
+testJSONHash = "zdq6yKAERvMYwzUsCU2hQmTsQZ4k9gkNxuRJ5EDyC7cDzjSbH"
 
 -- the exact contents of that file
 testfileTxtContents :: BL.ByteString
